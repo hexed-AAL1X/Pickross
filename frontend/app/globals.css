@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #f9fafb 0, #e0f2fe 25%,
+      #fee2e2 50%, #fef9c3 75%, #e0f2fe 100%);
+  color: #0f172a;
+}
+
+.app-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-shell {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  padding: 20px 24px 18px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 1100px;
+}
+
+.board-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mode-tabs {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 9999px;
+  background: #e5e7eb;
+}
+
+.mode-tab {
+  border: none;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #4b5563;
+  background: transparent;
+}
+
+.mode-tab--active {
+  background: #0ea5e9;
+  color: #ffffff;
+  box-shadow: 0 1px 6px rgba(14, 165, 233, 0.7);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #0ea5e9, #22c55e);
+  color: #ffffff;
+  font-size: 0.8rem;
+}
+
+.hud-title {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.hud-mode {
+  font-weight: 600;
+}
+
+.hud-progress,
+.hud-timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-timer {
+  font-weight: 700;
+}
+
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.controls-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  background: #ffffff;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.controls-button--primary {
+  background: #0ea5e9;
+  color: #ffffff;
+  border-color: #0284c7;
+}
+
+.controls-speed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+}
+
+.controls-speed input[type="range"] {
+  accent-color: #0ea5e9;
+}

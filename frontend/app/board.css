@@ -1,0 +1,144 @@
+/* Placeholder: detailed board styles were removed; here we keep it minimal so app runs. */
+
+.board-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-matrix {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #e5f0ff, #ffffff);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+}
+
+.board-col-clues {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.board-col-clue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 20px;
+}
+
+.board-col-clue span {
+  min-width: 18px;
+  padding: 2px 4px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.1;
+  border-radius: 6px;
+  background: #e5e7eb;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.3);
+}
+
+.board-row-clues {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.board-row-clue {
+  display: inline-flex;
+  gap: 3px;
+  min-height: 20px;
+}
+
+.board-row-clue span {
+  min-width: 16px;
+  padding: 2px 4px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.1;
+  border-radius: 6px;
+  background: #e5e7eb;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.3);
+}
+
+.board-wrapper {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+}
+
+.board-grid {
+  display: grid;
+  background-color: #cbd5e1;
+  padding: 6px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.25);
+  background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+    linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.board-cell {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-sizing: border-box;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background-color: #f9fafb;
+}
+
+.board-cell--filled {
+  background-color: #0f172a;
+  border-color: #020617;
+}
+
+.board-cell--empty {
+  background-color: #f9fafb;
+}
+
+.board-cell--color {
+  border-radius: 4px;
+}
+
+.board-cell--active {
+  box-shadow: 0 0 0 2px #22c55e inset;
+}
+
+.board-cell__x {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.board-crosshair {
+  position: absolute;
+  pointer-events: none;
+}
+
+.board-crosshair--h {
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(34, 197, 94, 0.6);
+}
+
+.board-crosshair--v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(34, 197, 94, 0.6);
+}
+
