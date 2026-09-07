@@ -1,144 +1,191 @@
-# Picross y sus Variaciones — README
+<a id="readme-top"></a>
 
-## Resumen
-Este proyecto modela y resuelve el **Picross** (también conocido como Nonograma) y sus variaciones avanzadas (**Color Picross** y **Mega Picross**) como **Problemas de Satisfacción de Restricciones (CSP)** usando Google OR-Tools en Python. El Picross es un puzzle lógico donde se deben pintar celdas en una cuadrícula siguiendo pistas numéricas para revelar una imagen oculta. El objetivo es implementar solvers eficientes que encuentren la configuración única que satisface todas las restricciones del puzzle.
+<img src="https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif" width="100%">
 
-## Objetivo general
-Modelar y resolver diferentes variaciones del Picross mediante Programación por Restricciones (CP) con OR-Tools, demostrando cómo técnicas de CSP pueden abordar puzzles lógicos de complejidad creciente.
+<p align="center">
+  <img alt="GitHub Repo contributors" src="https://img.shields.io/github/contributors/hexed-AAL1X/Pickross?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/hexed-AAL1X/Pickross?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/hexed-AAL1X/Pickross?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo issues" src="https://img.shields.io/github/issues/hexed-AAL1X/Pickross?style=for-the-badge">&nbsp;
+</p>
 
-## Objetivos específicos
-- Comprender el Picross como un Problema de Satisfacción de Restricciones y sus diferencias con problemas de optimización.
-- Conocer el rol de los solvers de CP (propagación de restricciones, búsqueda y heurísticas) en la resolución de puzzles lógicos.
-- Implementar modelos eficientes en OR-Tools que capturen las restricciones específicas de cada variación.
-- Comparar la complejidad computacional entre Picross regular, Color Picross y Mega Picross.
-- Generar visualizaciones gráficas de las soluciones encontradas.
+<br>
 
-## Descripción del problema
+<div align="center">
+  <h1 align="center">PickCross</h1>
+  <h3 align="center">Picross Solver Frontend</h3>
+  <p align="center">
+    Frontend web (Next.js) para resolver Picross, Color Picross y Mega Picross con animación paso a paso.
+    <br>
+    <a href="https://github.com/hexed-AAL1X/Pickross"><strong>Explorar repositorio »</strong></a>
+    <br><br>
+    <a href="https://github.com/hexed-AAL1X/Pickross">Ver código</a>
+    ·
+    <a href="https://github.com/hexed-AAL1X/Pickross/issues/new?labels=bug">Reportar bug</a>
+    ·
+    <a href="https://github.com/hexed-AAL1X/Pickross/issues/new?labels=enhancement">Pedir feature</a>
+  </p>
+</div>
 
-### Picross Regular
-- **Cuadrícula:** n×m celdas (binarias: pintada o vacía)
-- **Pistas:** Números en filas y columnas que indican grupos consecutivos de celdas pintadas
-- **Restricciones:**
-  - Cada grupo de celdas consecutivas debe estar separado por al menos una celda vacía
-  - Todas las pistas de filas y columnas deben satisfacerse simultáneamente
-- **Ejemplo resuelto:** Tablero 15×20 con 314 celdas pintadas
+<details>
+  <summary>Tabla de contenidos</summary>
+  <ol>
+    <li><a href="#about-the-project">About the project</a></li>
+    <li><a href="#built-with">Built with</a></li>
+    <li><a href="#important-notices">Important notices</a></li>
+    <li>
+      <a href="#getting-started">Getting started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#available-scripts">Available scripts</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#contributing">Contributing</a>
+      <ul>
+        <li><a href="#top-contributors">Top contributors</a></li>
+      </ul>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+<br>
 
-### Color Picross
-- **Extensión:** Múltiples colores además de pintado/vacío
-- **Pistas:** Incluyen tanto el número como el color de cada grupo
-- **Complejidad adicional:** 
-  - Grupos de diferentes colores deben estar separados por al menos una celda vacía
-  - Aumenta exponencialmente el espacio de búsqueda
-- **Ejemplo resuelto:** Tablero 10×10 con 3 colores
+<a id="about-the-project"></a>***About the project***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-### Mega Picross
-- **Innovación:** Pistas "mega" que abarcan **dos líneas adyacentes simultáneamente**
-- **Restricción especial:** Los grupos mega deben formar **regiones conectadas** que pueden moverse entre ambas líneas (horizontal y verticalmente)
-- **Complejidad:** Los patrones pueden formar formas no lineales (L, T, zigzag)
-- **Ejemplo resuelto:** Tablero 5×5 con restricciones mega en filas 2-3 y columnas 0-1
+PickCross es una aplicación web enfocada en resolver puzzles de **Picross** (Nonograma) y sus variaciones.
 
-## Metodología
+Incluye:
 
-### 1. Modelado como CSP
-- **Variables:** Una variable por celda representando su estado (vacía/pintada o color)
-- **Dominio:** 
-  - Picross regular: {0, 1}
-  - Color Picross: {0, 1, 2, ..., k} donde k = número de colores
-  - Mega Picross: {0, 1} con restricciones adicionales de conectividad
-- **Restricciones:** Expresadas mediante patrones válidos (`AddAllowedAssignments`)
+- Solver de Picross regular, Color Picross y Mega Picross.
+- Visualización del tablero con animación paso a paso (play / pause / step / reset).
+- Generación de patrones válidos y resolución por restricciones en el cliente.
 
-### 2. Generación de patrones válidos
-Cada variación implementa su propia lógica:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Picross Regular (`generate_line_patterns`)
-- **Algoritmo:** Backtracking para generar todas las configuraciones válidas
-- **Entrada:** Longitud de línea y secuencia de pistas
-- **Salida:** Lista de tuplas representando patrones válidos
-- **Ejemplo:** Para longitud 5 y pistas [1,1] → 6 patrones posibles
+<a id="built-with"></a>***Built with***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-#### Color Picross (`generate_color_line_patterns`)
-- **Extensión:** Similar al regular pero considerando colores
-- **Restricción adicional:** Grupos de diferentes colores separados por vacíos
-- **Complejidad:** O(n^k) donde k = número de grupos
+- ![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+- ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)
+- ![Framer Motion](https://img.shields.io/badge/Framer_Motion-animations-0055FF?style=for-the-badge&logo=framer&logoColor=white)
 
-#### Mega Picross (`generate_mega_patterns`)
-- **Innovación clave:** Verifica conectividad de celdas entre dos líneas
-- **Algoritmo:**
-  1. Generar todas las combinaciones de k celdas en 2n posiciones
-  2. Verificar conectividad mediante DFS (Depth-First Search)
-  3. Filtrar solo patrones donde celdas forman componente conexo
-- **Conectividad:** Las celdas pueden conectarse horizontal o verticalmente
-- **Complejidad:** Exponencial - para 5 celdas entre 2 líneas de longitud 5 → 44 patrones válidos
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### 3. Solver CP-SAT de OR-Tools
-- **Propagación de restricciones:** Reduce el espacio de búsqueda eliminando valores inconsistentes
-- **Búsqueda inteligente:** Emplea heurísticas para explorar el espacio de soluciones eficientemente
-- **AddAllowedAssignments:** Restricción que fuerza variables a tomar valores de un conjunto predefinido de tuplas
+<a id="important-notices"></a>***Important notices***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+> [!NOTE]
+> El frontend vive en la carpeta `frontend/`.
+>
+> Usa `npm run dev` dentro de `frontend` para levantar el servidor local.
 
-### 4. Visualización
-- **Matplotlib:** Generación de gráficos del tablero con:
-  - Celdas pintadas/coloreadas según la solución
-  - Pistas mostradas en los márgenes
-  - Bordes y separaciones claras
+> [!IMPORTANT]
+> La resolución del puzzle corre en el navegador. No necesitas backend para usar el solver.
 
-## Resultados principales
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Picross Regular (15×20)
-- **Complejidad:** 314 celdas pintadas de 300 totales
-- **Tiempo de resolución:** < 1 segundo
-- **Patrones generados:** ~1000 patrones válidos en total
-- **Imagen revelada:** Castillo pixelado
+<a id="getting-started"></a>***Getting started***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+<a id="prerequisites"></a>
 
-### Color Picross (10×10)
-- **Complejidad:** 3 colores (rojo, verde, azul)
-- **Tiempo de resolución:** ~5 segundos
-- **Espacio de búsqueda:** 3^100 ≈ 5×10^47 configuraciones teóricas
-- **Imagen revelada:** Pingüino con patrones de color pixelado
+### Prerequisites
 
-### Mega Picross (5×5)
-- **Restricciones mega:** 2 pares (filas 2-3, columnas 0-1)
-- **Patrones mega generados:** 44 para columnas, 55 para filas
-- **Tiempo de resolución:** < 1 segundo
-- **Verificación:** Grupos conectados correctamente distribuidos entre líneas adyacentes
-- **Imagen revelada:** Sombrero pixelado
+- Node.js (recomendado: LTS)
+- npm
 
-## Comparación de complejidad
+<a id="installation"></a>
 
-| Variación | Espacio de búsqueda | Patrones típicos/línea | Algoritmo clave | Complejidad temporal |
-|-----------|-------------------|----------------------|----------------|---------------------|
-| **Picross Regular** | 2^(n×m) | 1-100 | Backtracking | O(n × m × p) |
-| **Color Picross** | k^(n×m) | 10-1000 | Backtracking con colores | O(n × m × p × k^g) |
-| **Mega Picross** | 2^(n×m) × conectividad | 50-500 | Combinatoria + DFS | O(C(2n,k) × k) |
+### Installation
 
-Donde:
-- n, m = dimensiones del tablero
-- p = número promedio de patrones por línea
-- k = número de colores
-- g = número de grupos
-- C(2n,k) = combinaciones de k elementos en 2n posiciones
+1) Clonar el repositorio
 
-## Técnicas y algoritmos aplicados
+```bash
+git clone https://github.com/hexed-AAL1X/Pickross.git
+cd Pickross/frontend
+```
 
-1. **Backtracking:** Generación sistemática de patrones válidos
-2. **Depth-First Search (DFS):** Verificación de conectividad en Mega Picross
-3. **Constraint Propagation:** Reducción del espacio de búsqueda
-4. **Branch and Bound:** Exploración inteligente del solver CP-SAT
-5. **Pattern Matching:** Uso de `AddAllowedAssignments` para restricciones complejas
+2) Instalar dependencias
 
-## Conclusiones
+```bash
+npm install
+```
 
-- **Modelado declarativo:** Expresar el problema como CSP permitió una implementación elegante y mantenible
-- **Escalabilidad:** El enfoque funciona para tableros de diferentes tamaños y complejidades
-- **Reutilización:** El código base del Picross regular se reutiliza en las variaciones
-- **Trade-off complejidad-flexibilidad:** Mayor flexibilidad (colores, mega) implica mayor complejidad computacional
-- **Aplicabilidad:** Las técnicas son generalizables a otros puzzles lógicos (Sudoku, Kakuro, etc.)
+3) Ejecutar en modo desarrollo
 
----
+```bash
+npm run dev
+```
 
-## Créditos
-| Código | Apellidos y Nombres |
-|--------|--------------------|
-| U202122430 | Ariana Graciela Quelopana Puppo |
-| U20221E167 | Liam Mikael Quino Neff |
-| U20211c688 | Leonardo Leoncio Bravo Ricapa |
-| U202210644 | Nathaly Eliane Anaya Vadillo |
+4) Abrir en el navegador
+
+- `http://localhost:3000/`
+
+<a id="available-scripts"></a>
+
+### Available scripts
+
+```bash
+npm run dev      # next dev
+npm run build    # build producción
+npm run start    # next start
+npm run lint     # next lint
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<a id="contributing"></a>***Contributing***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+Contribuciones bienvenidas.
+
+1) Fork del proyecto
+2) Crear una rama (`git checkout -b feature/nueva-feature`)
+3) Commit (`git commit -m "Add: ..."`)
+4) Push (`git push origin feature/nueva-feature`)
+5) Pull Request
+
+<a id="top-contributors"></a>
+### Top contributors
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center" width="160">
+      <a href="https://github.com/coshiiiiiiiiii">
+        <img src="https://avatars.githubusercontent.com/u/148801435?v=4" width="88" height="88" alt="Ariana Quelopana Puppo" style="border-radius:50%;" /><br />
+        <b>Ariana Quelopana Puppo</b><br />
+        <sub>@coshiiiiiiiiii</sub>
+      </a>
+    </td>
+    <td align="center" width="160">
+      <a href="https://github.com/tsavorae">
+        <img src="https://avatars.githubusercontent.com/u/62164801?v=4" width="88" height="88" alt="tera" style="border-radius:50%;" /><br />
+        <b>tera</b><br />
+        <sub>@tsavorae</sub>
+      </a>
+    </td>
+    <td align="center" width="160">
+      <a href="https://github.com/LiamQuinoNeff">
+        <img src="https://avatars.githubusercontent.com/u/130613445?v=4" width="88" height="88" alt="Liam Quino Neff" style="border-radius:50%;" /><br />
+        <b>Liam Quino Neff</b><br />
+        <sub>@LiamQuinoNeff</sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+</div>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<a id="contact"></a>***Contact***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+<p align="center">
+  <a href="mailto:hexed_aal1x.ops@proton.me"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white&color=black" /></a>
+  <a href="https://www.instagram.com/hexed_aal1x"><img src="https://img.shields.io/badge/instagram-%2312100E.svg?&style=for-the-badge&logo=instagram&logoColor=white&color=black" /></a>
+  <a href="https://www.linkedin.com/in/leonardo-bravo-4120b8228/"><img src="https://img.shields.io/badge/linkedin-%2312100E.svg?&style=for-the-badge&logo=linkedin&logoColor=white&color=black" /></a>
+</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
