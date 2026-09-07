@@ -943,7 +943,7 @@ function Board({ board, rowClues, colClues, activeCell, isColorMode, visited }) 
   );
 }
 
-function HUD({ elapsed, currentStep, totalSteps, mode }) {
+function HUD({ elapsed, currentStep, totalSteps, mode, onTitleDoubleClick }) {
   const minutes = Math.floor(elapsed / 60)
     .toString()
     .padStart(2, "0");
@@ -960,7 +960,9 @@ function HUD({ elapsed, currentStep, totalSteps, mode }) {
 
   return (
     <div className="hud">
-      <div className="hud-title">{title}</div>
+      <div className="hud-title" onDoubleClick={onTitleDoubleClick}>
+        {title}
+      </div>
       <div className="hud-mode">{modeLabel}</div>
       <div className="hud-progress">
         1P {currentStep}/{totalSteps}
@@ -1228,6 +1230,14 @@ export default function HomePage() {
     setActiveCell(null);
   };
 
+  const handleComplete = () => {
+    setIsPlaying(false);
+    setBoard(solution.map((row) => row.slice()));
+    setVisited(createVisitedBoard(solution.length, solution[0].length));
+    setCurrentStep(steps.length);
+    setActiveCell(null);
+  };
+
   return (
     <main className="app-root">
       <div className="app-shell">
@@ -1236,6 +1246,7 @@ export default function HomePage() {
           currentStep={currentStep}
           totalSteps={steps.length}
           mode={mode}
+          onTitleDoubleClick={handleComplete}
         />
 
         <section className="board-layout">

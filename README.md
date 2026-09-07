@@ -12,7 +12,7 @@
 <br>
 
 <div align="center">
-  <h1 align="center">PickCross</h1>
+  <img src="docs/pickcross-logo.png" alt="PickCross" width="220" />
   <h3 align="center">Picross Solver Frontend</h3>
   <p align="center">
     Frontend web (Next.js) para resolver Picross, Color Picross y Mega Picross con animación paso a paso.
@@ -54,6 +54,10 @@
 
 <a id="about-the-project"></a>***About the project***
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+
+<p align="center" style="margin: 7px;">
+  <img src="docs/dashboard-preview.png" alt="Dashboard de PickCross con Picross en ejecución" width="900" style="margin: 7px;" />
+</p>
 
 PickCross es una aplicación web enfocada en resolver puzzles de **Picross** (Nonograma) y sus variaciones.
 
