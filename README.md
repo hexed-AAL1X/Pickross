@@ -12,7 +12,7 @@
 <br>
 
 <div align="center">
-  <img src="docs/pickcross-logo.png" alt="PickCross" width="220" />
+  <img src="docs/pickcross-logo.png" alt="PickCross" width="320" />
   <h3 align="center">Picross Solver Frontend</h3>
   <p align="center">
     Frontend web (Next.js) para resolver Picross, Color Picross y Mega Picross con animación paso a paso.
